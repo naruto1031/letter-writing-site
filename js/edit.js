@@ -636,7 +636,7 @@ outputBtn.addEventListener('click', async function () {
             html2canvas(element, {
                 backgroundColor: null
             }).then((canvas) => {
-                var set_title = document.getElementById("p-title");
+                var set_title = document.querySelector(".p-title");
                 title = set_title.textContent;
                 if (title === "タイトルを入力してください") {
                     title = "sample";
