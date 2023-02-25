@@ -569,7 +569,7 @@ main {
     margin-top: 0;
 }
 
-.dejibumi-title {
+.letter-title {
     cursor: auto;
     font-size: 1.2em;
     margin-bottom: 2px;
@@ -582,7 +582,7 @@ main {
 
 }
 
-.dejibumi-title p:focus {
+.letter-title p:focus {
     border: 2px solid white;
     opacity: 1;
 }

@@ -77,7 +77,7 @@
 			<div class="temp_e select_elem_1 main-temp-elem">
 				<div class="template-text-1">
 					<h2 class="underline">タイトル設定</h2>
-					<div class="dejibumi-title labal-output">
+					<div class="letter-title labal-output">
 						<p class="p-title" contenteditable="true">タイトルを入力してください</p>
 					</div>
 					<div class="title-exp">
@@ -96,7 +96,7 @@
 						<h4 class="h4-output">手紙をダウンロード</h4>
 					</label>
 					<p class="exp">現在編集中の手紙をPNGファイルに変換します。</p>
-
+					<input type="button" id="outputBtn" style="display: none;">
 				</div>
 			</div>
 			<!-- ============================================================= -->
@@ -188,7 +188,7 @@
 	<script src="./package/pickr.index.js"></script>
 	<script>
 		$(function () {
-			$(".dejibumi-title, .font-test").on("keydown", function (e) {
+			$(".letter-title, .font-test").on("keydown", function (e) {
 				if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
 					return false;
 				} else {

@@ -276,7 +276,7 @@ var current_url = url[0];
 select_img.forEach((img, index) => {
     img.addEventListener("click", () => {
         current_url = url[index];
-        insert_element.style.backgroundImage = `url(../data/img_data/${url[index]})`;
+        insert_element.style.backgroundImage = `url(./data/img_data/${url[index]})`;
     });
 });
 
@@ -481,6 +481,7 @@ window.onload = async function () {
         var visivle_elem = document.querySelector(".edit_area");
         var query = location.search;
         var value = query.split('=');
+        title = "タイトルを入力してください";
         if (value[1]) {
             var serch_id = decodeURIComponent(value[1]);
             const params = { method: "POST", body: JSON.stringify({ "edit_id": serch_id }) };
@@ -584,7 +585,7 @@ outputBtn.addEventListener('click', async function () {
     // writing-modeを再設定
     // 処理完了
     try {
-        var result = window.confirm("でじぶみを生成します。よろしいですか？");
+        var result = window.confirm("手紙を生成します。よろしいですか？");
         if (!result) { return; }
         var evacation_dom = [];
         var evacation_text = [];
@@ -635,6 +636,8 @@ outputBtn.addEventListener('click', async function () {
             html2canvas(element, {
                 backgroundColor: null
             }).then((canvas) => {
+                var set_title = document.getElementById("p-title");
+                title = set_title.textContent;
                 if (title === "タイトルを入力してください") {
                     title = "sample";
                 }
