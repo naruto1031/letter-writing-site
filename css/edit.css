@@ -279,7 +279,7 @@ main {
 
 .off_t {
     opacity: 0;
-    display: none;
+    display: none !important;
 }
 
 @keyframes fadeIn {
