@@ -559,6 +559,10 @@ main {
     cursor: pointer;
 }
 
+#contextmenu li:hover {
+    opacity: 0.8;
+}
+
 .h4-output {
     margin-bottom: 2px;
     font-weight: 100;
