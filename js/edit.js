@@ -1,4 +1,3 @@
-
 let el = {};
 let tempObjects;
 
@@ -21,44 +20,32 @@ let clickedDom;
  * ドラッグ移動アニメーション
  */
 function mousedown(e) {
-	// debugger;
-	//移動時にmousemove、離れた時にmouseup関数を実行する
 	window.addEventListener("mousemove", mousemove);
 	window.addEventListener("mouseup", mouseup);
 
-	//現在地を取得
 	let prevX = e.clientX;
 	let prevY = e.clientY;
 
 	clickedId = getId(e, "id");
 
-	// mousemoveされたとき
 	function mousemove(e) {
-
-		// リサイズが行われていない場合
 		if (!isRotate && !isResizing && isMove) {
-			// X,Y座標値差 = 初期値 - 現在地点
 			let newX = prevX - e.clientX;
 			let newY = prevY - e.clientY;
 
-			// 現在地点を変数として取得
 			const rect = el[clickedId].moveElem.getBoundingClientRect();
 
 			el[clickedId].moveElem.style.left = rect.left - newX + "px";
 			el[clickedId].moveElem.style.top = rect.top - newY + "px";
 
-			// top left位置を再設定
 			el[clickedId].moveElem.style.left = rect.left - newX + "px";
 			el[clickedId].moveElem.style.top = rect.top - newY + "px";
 
-			// console.log(newX);
 			prevX = e.clientX;
 			prevY = e.clientY;
 
 		}
 	}
-
-	// itemからカーソルが離れた際にイベントを解除
 	function mouseup() {
 		window.removeEventListener("mousemove", mousemove);
 		window.removeEventListener("mouseup", mouseup);
@@ -73,58 +60,43 @@ function mousedownResize(e) {
 		minSize: 12,
 		maxSize: 100,
 	});
-
 	clickedId = getId(e, "id");
 
 	const getRect = el[clickedId].moveElem.getBoundingClientRect();
 	const heightRatios = getRect.height / getRect.width;
 
-	// リサイズを行う際の要素(resizer)を指定
-	// リサイズを許可し、draggableアニメーションの発動をさせない
 	currentResizer = e.target;
 	isResizing = true;
-
-	//　クリック時のカーソル座標を取得
 	let prevX = e.clientX;
 
 	//  mousemove mouseupイベントそれぞれを指定要素に付加
 	window.addEventListener("mousemove", mousemoveResize);
 	window.addEventListener("mouseup", mouseupResize);
 
-	//  mousemoveイベント
 	function mousemoveResize(e) {
-		// 要素の相対位置を取得
-		const rect = el[clickedId].moveElem.getBoundingClientRect();
-
+		let rect = el[clickedId].moveElem.getBoundingClientRect();
 		const calcHeight = (rect.width - (prevX - e.clientX)) * heightRatios;
 
-		change_size = 0;
-		// 指定要素に付加されているクラス名に応じて処理を変える　
 		if (currentResizer.classList.contains("resizer-br")) {
 			// 右下
-			// 幅or高さ　-　(クリック時の座標-現在のカーソル位置)
 			el[clickedId].moveElem.style.width = rect.width - (prevX - e.clientX) + "px";
 			el[clickedId].moveElem.style.height = calcHeight + "px";
 		} else if (currentResizer.classList.contains("resizer-bl")) {
 			// 左下
-			// 要素のleft値の変更を行わなければならない
 			el[clickedId].moveElem.style.width = rect.width + (prevX - e.clientX) + "px";
 			el[clickedId].moveElem.style.height = calcHeight + "px";
 			el[clickedId].moveElem.style.left = rect.left - (prevX - e.clientX) + "px";
 		} else if (currentResizer.classList.contains("resizer-cr")) {
 			// 右中央
-			// 要素のwidth値の変更を行わなければならない
 			el[clickedId].moveElem.style.width = rect.width - (prevX - e.clientX) + "px";
 		} else if (currentResizer.classList.contains("resizer-tr")) {
 			// 右上
-			// 要素のtop値の変更を行わなければならない
 			el[clickedId].moveElem.style.width = rect.width - (prevX - e.clientX) + "px";
 			el[clickedId].moveElem.style.height = calcHeight + "px";
 			rect = el[clickedId].moveElem.getBoundingClientRect();
 			el[clickedId].moveElem.style.top = rect.top - (rect.bottom - getRect.bottom) + "px";
 		} else {
 			// 左上
-			// 要素の幅、高さ、top値、 left値すべての変更を行う
 			el[clickedId].moveElem.style.width = rect.width + (prevX - e.clientX) + "px";
 			el[clickedId].moveElem.style.height = calcHeight + "px";
 			rect = el[clickedId].moveElem.getBoundingClientRect();
@@ -137,12 +109,9 @@ function mousedownResize(e) {
 			maxSize: 100,
 		});
 
-		// 変更後のカーソル位置をprevに退避させる
 		prevX = e.clientX;
 		prevY = e.clientY;
 	}
-
-	//ボタンが外された場合Eventを除去
 	function mouseupResize() {
 		el[clickedId].moveElem.style.height = "fit-content";
 		window.removeEventListener("mousemove", mousemoveResize);
@@ -155,7 +124,6 @@ function mousedownResize(e) {
  * 要素の回転アニメーション
  */
 function mousedownRotate(e) {
-	// debugger;
 	window.addEventListener("mousemove", mousemoveRotate);
 	window.addEventListener("mouseup", mouseupRotate);
 	isRotate = true;
@@ -170,33 +138,23 @@ function mousedownRotate(e) {
 		y: topRect.left
 	};
 
-	// 要素の中心点
 	const centerPosition = {
 		x: centerRect.top,
 		y: centerRect.left
 	};
 
-	// debugger
-	// 現在地点を入力
 	function mousemoveRotate(e) {
-		// debugger;
-		// 現在地点を(e.clientY, e.clientXとして取得)
 		const prev = {
 			x: e.clientY,
 			y: e.clientX
 		};
-		// 各辺の長さ計算を行う
+
 		const oppositeSide = Math.sqrt(((prev.x - topPosition.x) ** 2) + ((prev.y - topPosition.y) ** 2));
 		const flankingSideFirst = Math.sqrt(((prev.x - centerPosition.x) ** 2) + ((prev.y - centerPosition.y) ** 2));
 		const flankingSideSecond = Math.sqrt(((topPosition.x - centerPosition.x) ** 2) + ((topPosition.y - centerPosition.y) ** 2));
-
-		// 余弦定理を用いてcosXを求める
 		const cosX = (((flankingSideFirst ** 2) + (flankingSideSecond ** 2) - (oppositeSide ** 2)) / (2 * flankingSideFirst * flankingSideSecond));
 
-		// 逆三角関数(arcCos)を用いて ラジアン値を求める
 		const radian = Math.acos(cosX);
-
-		// 角度に変換する
 		let degree = radian * (180 / Math.PI);
 
 		if (prev.y < centerPosition.y) {
@@ -259,20 +217,20 @@ selectOn.forEach((elem) => {
  * 画像選択による、背景画像の差し替え
  */
 const url = ["harinezumi.PNG", "kingyo.PNG", "sc_mimai.PNG", "modan.png", "xmas.PNG", "kouyou.png", "sakura.png", "oiwai.png", "oiwai_1.png", "night.png"];
-const insert_element = document.getElementById("data");
-const select_img = document.querySelectorAll(".select-img-all");
-let current_url = url[0];
-select_img.forEach((img, index) => {
+const insertElement = document.getElementById("data");
+const selectImg = document.querySelectorAll(".select-img-all");
+let currentUrl = url[0];
+selectImg.forEach((img, index) => {
 	img.addEventListener("click", () => {
-		current_url = url[index];
-		insert_element.style.backgroundImage = `url(./data/img_data/${url[index]})`;
+		currentUrl = url[index];
+		insertElement.style.backgroundImage = `url(./data/img_data/${url[index]})`;
 	});
 });
 
 /**
  * 対象のDOMを右クリックした時のコンテキストメニュー表示アニメーション
  */
-function view_context_menu() {
+function viewContextMenu() {
 	document.querySelector(".context").addEventListener('contextmenu', function (e) {
 		document.getElementById('contextmenu').style.left = e.pageX + "px";
 		document.getElementById('contextmenu').style.top = e.pageY + "px";
@@ -294,7 +252,7 @@ function view_context_menu() {
  * 要素をダブルクリックすることでテキスト編集可能状態にする
  * @param e event
  */
-function set_Editable(e) {
+function setEditable(e) {
 	// ドラッグ移動イベントを実行不可の状態にする
 	isMove = false;
 	let clickedId = getId(e, "id");
@@ -327,7 +285,7 @@ function set_Editable(e) {
  * フォーカスを外した際に、テキストを非編集状態にする
  * @param e event
  */
-function set_Uneditable(e) {
+function setUneditable(e) {
 	// ドラッグ移動イベントを実行可能状態にする
 	isMove = true;
 	let clickedId = getId(e, "id");
@@ -355,9 +313,9 @@ const onEdit = document.getElementById("edit_on");
 const offEdit = document.getElementById("edit_off");
 
 // 要素を編集モードにする
-onEdit.addEventListener("click", change_edit);
+onEdit.addEventListener("click", changeEdit);
 
-function change_edit() {
+function changeEdit() {
 	// debugger;
 	offEdit.classList.remove("tgl_on");
 	onEdit.classList.add("tgl_on");
@@ -376,9 +334,9 @@ function change_edit() {
 
 
 // 要素を調整・閲覧モードにする
-offEdit.addEventListener("click", change_preview);
+offEdit.addEventListener("click", changePreview);
 
-function change_preview() {
+function changePreview() {
 	onEdit.classList.remove("tgl_on");
 	offEdit.classList.add("tgl_on");
 	const noneElem = document.querySelectorAll(".on_n");
@@ -412,11 +370,11 @@ $(function () {
 
 		$(".main-edit-content").css("width", "fit-content");
 		const resizeWidth = document.querySelectorAll(".fit");
-		let px_width = [];
+		let pxWidth = [];
 
 		$(".main-edit-content").css("width", (index, _) => {
-			px_width[index] = resizeWidth[index].getBoundingClientRect();
-			return `${px_width[index].width}px`;
+			pxWidth[index] = resizeWidth[index].getBoundingClientRect();
+			return `${pxWidth[index].width}px`;
 		});
 
 	});
@@ -447,8 +405,8 @@ $(function () {
 	});
 });
 
-const remove_button = document.getElementById("remove");
-remove_button.addEventListener("click", removeElement)
+const removeButton = document.getElementById("remove");
+removeButton.addEventListener("click", removeElement)
 /**
  * コンテキストから、対象のDOMを削除するボタンを押した時の処理
  */
@@ -487,11 +445,11 @@ function addMouseEvent(elemValue) {
 		resizer.addEventListener("mousedown", mousedownResize);
 
 	}
-	el[objectRef.id].editText.addEventListener("dblclick", set_Editable);
-	el[objectRef.id].editText.addEventListener("blur", set_Uneditable);
+	el[objectRef.id].editText.addEventListener("dblclick", setEditable);
+	el[objectRef.id].editText.addEventListener("blur", setUneditable);
 
 	// コンテクストメニューを表示する関数を実行
-	view_context_menu()
+	viewContextMenu()
 
 	fitty('.fit', {
 		minSize: 12,
@@ -499,16 +457,13 @@ function addMouseEvent(elemValue) {
 	});
 }
 
-function add_style(content_txt, css, elem_class) {
+function addStyle(content_txt, css, elem_class) {
 	$(`#${tempObjects[elem_class].textId}`).text(content_txt);
 	$(`#${tempObjects[elem_class].rotate.rotateContent}`).css("transform", css.transform);
 	$(`#${tempObjects[elem_class].textId}`).css("color", css.color);
 	$(`#${tempObjects[elem_class].textId}`).css("fontFamily", css['font-family']);
 	$(`#${tempObjects[elem_class].textId}`).css("textAlign", css["text-align"]);
 	$(`#${tempObjects[elem_class].textId}`).css("writingMode", css.writingMode);
-
-
-
 	$(`#${tempObjects[elem_class].id}`).css("width", css.or_width);
 	$(`#${tempObjects[elem_class].id}`).css("top", css.or_top);
 	$(`#${tempObjects[elem_class].id}`).css("left", css.or_left);
@@ -518,8 +473,8 @@ function add_style(content_txt, css, elem_class) {
 			minSize: 12,
 			maxSize: 100,
 		});
-		var visivle_elem = document.querySelector(".edit_area");
-		visivle_elem.classList.remove("hidden");
+		const visibleElem = document.querySelector(".edit_area");
+		visibleElem.classList.remove("hidden");
 	}, 200);
 }
 
@@ -562,7 +517,7 @@ outputBtn.addEventListener('click', async function () {
 		let evacuationDom = [];
 		let evacuationText = [];
 		let resetWriting = $(".text");
-		change_preview();
+		changePreview();
 
 		await Promise.all(resetWriting.map((_, elem) => {
 			elem = $(elem);
@@ -588,7 +543,6 @@ outputBtn.addEventListener('click', async function () {
 			});
 		}
 
-		// canvas生成のための一時的な遅延
 		setTimeout(async () => {
 			const canvas = await html2canvas(element, { backgroundColor: null });
 			const titleText = document.querySelector(".p-title").textContent || "sample";
@@ -597,7 +551,6 @@ outputBtn.addEventListener('click', async function () {
 			getImage.click();
 		}, 10);
 
-		// 元の状態に戻すための遅延
 		setTimeout(() => {
 			setWritingMode(evacuationDom, "vertical-rl");
 			evacuationDom.forEach((elem, index) => {
@@ -617,25 +570,23 @@ outputBtn.addEventListener('click', async function () {
 	}
 });
 
+let domCount = 0;
+let tempBtnRef = [];
 
-let count = 0; // 挿入済みHTMLDOMのテンプレート総数をカウントする
-let tempBtnRef = []; // ボタン要素を格納する配列
-
-// 各ボタン要素にクリックイベントを付加
 for (let index = 0; index < 3; index++) {
 	tempBtnRef.push(document.getElementById("temp-" + index));
 	tempBtnRef[index].addEventListener('click', insert_dom);
 }
 
-function createTemplateObject(count) {
+function createTemplateObject(domCount) {
 	const elemUnique = ["ft", "sc", "th"];
 	let domElement = {};
 	elemUnique.forEach((prefix, i) => {
-		const rotateBaseId = `${prefix}_rotate_${count}`;
-		const textId = `text_${count}`;
+		const rotateBaseId = `${prefix}_rotate_${domCount}`;
+		const textId = `text_${domCount}`;
 		domElement[`${prefix}_content`] = {
-			"id": `${prefix}_${count}`,
-			"resizeClass": `.resizer-${count}`,
+			"id": `${prefix}_${domCount}`,
+			"resizeClass": `.resizer-${domCount}`,
 			"rotate": {
 				"rotateId": rotateBaseId,
 				"rotateCenterId": `${rotateBaseId}Center`,
@@ -644,17 +595,17 @@ function createTemplateObject(count) {
 			},
 			"textId": textId,
 			"dom": `
-				<div class="${prefix}_content context main-edit-content" id="${prefix}_${count}" data-id="${prefix}_${count}" onContextmenu="return false;">
-					<div class="rotate" id="${rotateBaseId}_fix" data-rotate="${prefix}_${count}"></div>
-					<div class="rotate-center" id="${rotateBaseId}Center" data-rotate="${prefix}_${count}"></div>
-					<div data-id="${prefix}_${count}" class="edit_svg on_h" id="${rotateBaseId}Content">
-						<div class="resizer-${count} resizer resizer-tl on_n" data-id="${prefix}_${count}"></div>
-						<div class="resizer-${count} resizer resizer-tr on_n" data-id="${prefix}_${count}"></div>
-						<div class="resizer-${count} resizer resizer-bl on_n" data-id="${prefix}_${count}"></div>
-						<div class="resizer-${count} resizer resizer-br on_n" data-id="${prefix}_${count}"></div>
-						<div class="rotate_fix on_n" id="${rotateBaseId}" data-rotate="${prefix}_${count}"></div>
-						<div class="fit" data-id="${prefix}_${count}">
-							<${i === 0 ? 'h1' : i === 1 ? 'h4' : 'p'} class="text" contenteditable="false" id="${textId}" data-id="${prefix}_${count}">
+				<div class="${prefix}_content context main-edit-content" id="${prefix}_${domCount}" data-id="${prefix}_${domCount}" onContextmenu="return false;">
+					<div class="rotate" id="${rotateBaseId}_fix" data-rotate="${prefix}_${domCount}"></div>
+					<div class="rotate-center" id="${rotateBaseId}Center" data-rotate="${prefix}_${domCount}"></div>
+					<div data-id="${prefix}_${domCount}" class="edit_svg on_h" id="${rotateBaseId}Content">
+						<div class="resizer-${domCount} resizer resizer-tl on_n" data-id="${prefix}_${domCount}"></div>
+						<div class="resizer-${domCount} resizer resizer-tr on_n" data-id="${prefix}_${domCount}"></div>
+						<div class="resizer-${domCount} resizer resizer-bl on_n" data-id="${prefix}_${domCount}"></div>
+						<div class="resizer-${domCount} resizer resizer-br on_n" data-id="${prefix}_${domCount}"></div>
+						<div class="rotate_fix on_n" id="${rotateBaseId}" data-rotate="${prefix}_${domCount}"></div>
+						<div class="fit" data-id="${prefix}_${domCount}">
+							<${i === 0 ? 'h1' : i === 1 ? 'h4' : 'p'} class="text" contenteditable="false" id="${textId}" data-id="${prefix}_${domCount}">
 								${i === 0 ? '見出しを追加' : i === 1 ? '小見出しを追加' : '本文を追加'}
 							</${i === 0 ? 'h1' : i === 1 ? 'h4' : 'p'}>
 						</div>
@@ -667,25 +618,20 @@ function createTemplateObject(count) {
 }
 
 function insert_dom(e) {
-	// DOMオブジェクト生成
-	tempObjects = createTemplateObject(count);
-
-	// クリックされたボタン要素のvalueを取得(temp_objectsのキーとして使用)
+	tempObjects = createTemplateObject(domCount);
 	const BtnRef = e.composedPath();
 	const valueContent = tempBtnRef[BtnRef[0].dataset.tempid];
 	const value = valueContent.getAttribute('value');
 
-	// DOMのinsert
 	const insert = document.getElementById("data");
 	insert.insertAdjacentHTML('afterbegin', tempObjects[value].dom);
 
-	// insertされたDOMにドラッグイベントを付加
 	addMouseEvent(value);
 	fitty('.fit', {
 		minSize: 12,
 		maxSize: 100,
 	});
-	count++;
+	domCount++;
 }
 
 const pickrContainer = document.querySelector('.color-picker');
@@ -732,27 +678,22 @@ for (const [theme, config] of themes) {
 		const el = document.createElement('p');
 		pickrContainer.appendChild(el);
 
-		// Delete previous instance
 		if (pickr) {
 			pickr.destroyAndRemove();
 		}
 
-		// Apply active class
 		for (const btn of buttons) {
 			btn.classList[btn === button ? 'add' : 'remove']('active');
 		}
 
-		// Create fresh instance
 		pickr = new Pickr(Object.assign({
 			el, theme,
 			default: '#000'
 		}, config));
 
-		// Set events
 		pickr.on('init', instance => {
 			console.log('Event: "init"', instance);
 		}).on('save', (color) => {
-			// debugger;
 			currentText.css("color", `${color.toHEXA()}`);
 		});
 
@@ -763,24 +704,22 @@ buttons[0].click();
 
 window.onload = async function () {
 	try {
-		var visivle_elem = document.querySelector(".edit_area");
-		var query = location.search;
-		var value = query.split('=');
+		const visibleElem = document.querySelector(".edit_area");
+		let query = location.search;
+		let value = query.split('=');
 		title = "タイトルを入力してください";
 		if (value[1]) {
-			var serch_id = decodeURIComponent(value[1]);
-			const params = { method: "POST", body: JSON.stringify({ "edit_id": serch_id }) };
+			const searchId = decodeURIComponent(value[1]);
+			const params = { method: "POST", body: JSON.stringify({ "edit_id": searchId }) };
 			const response = await fetch("./get_edit_data.php", params);
 			if (response.ok) {
 				var redraw_elem = await response.json();
 				Object.keys(redraw_elem).forEach((key) => {
 					if (key == "_image") {
-						// console.log(key);
-						// debugger;
-						var image_path = redraw_elem[key]["backgroud-image"];
+						const image_path = redraw_elem[key]["backgroud-image"];
 						const first_insert = document.getElementById("data");
 						first_insert.style.backgroundImage = `url(../data/img_data/${image_path})`;
-						visivle_elem.classList.remove("hidden");
+						visibleElem.classList.remove("hidden");
 					} else if (key == "title") {
 						var redraw_title = redraw_elem["title"];
 						if (redraw_title === "sample") {
@@ -790,29 +729,25 @@ window.onload = async function () {
 						title_elem.textContent = redraw_title;
 						title = redraw_title;
 					} else {
+						let elem_class = "";
 						if (redraw_elem[key]["class"].indexOf("ft_content") >= 0) {
-							var elem_class = "ft_content";
+							elem_class = "ft_content";
 						} else if (redraw_elem[key]["class"].indexOf("sc_content") >= 0) {
-							var elem_class = "sc_content";
+							elem_class = "sc_content";
 						} else if (redraw_elem[key]["class"].indexOf("th_content") >= 0) {
-							var elem_class = "th_content";
+							elem_class = "th_content";
 						}
-
-						const tempObjects = createTemplateObject(count);
-
-						// DOMのinsert
+						const tempObjects = createTemplateObject(domCount);
 						const insert = document.getElementById("data");
 						insert.insertAdjacentHTML('afterbegin', tempObjects[elem_class].dom);
 
-						// insertされたDOMにドラッグイベントを付加
 						addMouseEvent(elem_class);
-						add_style(redraw_elem[key]["content_txt"], redraw_elem[key]["css"], elem_class);
+						addStyle(redraw_elem[key]["content_txt"], redraw_elem[key]["css"], elem_class);
 						fitty('.fit', {
 							minSize: 12,
 							maxSize: 100,
 						});
-						//incrementCount
-						count++;
+						domCount++;
 					}
 
 				});
@@ -821,7 +756,7 @@ window.onload = async function () {
 				console.log("no");
 			}
 		} else {
-			visivle_elem.classList.remove("hidden");
+			visibleElem.classList.remove("hidden");
 			console.log("not save");
 		}
 	} catch (error) {
