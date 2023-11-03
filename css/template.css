@@ -1,18 +1,18 @@
 @font-face {
 	font-family: "yosugara";
-	src: url(./fonts/yosugara1.1.ttf);
+	src: url(../assets/fonts/yosugara1.1.ttf);
 }
 @font-face {
 	font-family: "karakaze";
-	src: url(./fonts/karakaze-R.ttf);
+	src: url(../assets/fonts/karakaze-R.ttf);
 }
 @font-face {
 	font-family: "yunafont";
-	src: url(./fonts/YuNaFont.ttf);
+	src: url(../assets/fonts/YuNaFont.ttf);
 }
 @font-face {
 	font-family: "Asobifont";
-	src: url(./fonts/AsobiMemogaki-Regular-1-01.ttf);
+	src: url(../assets/fonts/AsobiMemogaki-Regular-1-01.ttf);
 }
 
 
@@ -84,7 +84,7 @@
 	width: 40px;
 	height: 40px;
 	border-radius: 5px;
-	background-image: url("../img/rotate.png");
+	background-image: url("../assets/img/rotate.png");
 	background-size: cover;
 	z-index: 3;
 	left: 50%;
@@ -103,7 +103,7 @@
     width: 800px;
     height: 100%;
     margin: 0 auto;
-    background-image: url(../data/img_data/harinezumi.PNG);
+    background-image: url(../assets/img/template/harinezumi.PNG);
     background-repeat: no-repeat;
     background-size: 600px, auto;
     background-position: center;

@@ -176,6 +176,7 @@ function mousedownRotate(e) {
 		y: centerRect.left
 	};
 
+	// debugger
 	// 現在地点を入力
 	function mousemoveRotate(e) {
 		// debugger;
@@ -190,13 +191,13 @@ function mousedownRotate(e) {
 		const flankingSideSecond = Math.sqrt(((topPosition.x - centerPosition.x) ** 2) + ((topPosition.y - centerPosition.y) ** 2));
 
 		// 余弦定理を用いてcosXを求める
-		cosX = (((flankingSideFirst ** 2) + (flankingSideSecond ** 2) - (oppositeSide ** 2)) / (2 * flankingSideFirst * flankingSideSecond));
+		const cosX = (((flankingSideFirst ** 2) + (flankingSideSecond ** 2) - (oppositeSide ** 2)) / (2 * flankingSideFirst * flankingSideSecond));
 
 		// 逆三角関数(arcCos)を用いて ラジアン値を求める
 		const radian = Math.acos(cosX);
 
 		// 角度に変換する
-		const degree = radian * (180 / Math.PI);
+		let degree = radian * (180 / Math.PI);
 
 		if (prev.y < centerPosition.y) {
 			degree = 360 - degree;
@@ -498,77 +499,6 @@ function addMouseEvent(elemValue) {
 	});
 }
 
-
-
-window.onload = async function () {
-	try {
-		var visivle_elem = document.querySelector(".edit_area");
-		var query = location.search;
-		var value = query.split('=');
-		title = "タイトルを入力してください";
-		if (value[1]) {
-			var serch_id = decodeURIComponent(value[1]);
-			const params = { method: "POST", body: JSON.stringify({ "edit_id": serch_id }) };
-			const response = await fetch("./get_edit_data.php", params);
-			if (response.ok) {
-				var redraw_elem = await response.json();
-				Object.keys(redraw_elem).forEach((key) => {
-					if (key == "_image") {
-						// console.log(key);
-						// debugger;
-						var image_path = redraw_elem[key]["backgroud-image"];
-						const first_insert = document.getElementById("data");
-						first_insert.style.backgroundImage = `url(../data/img_data/${image_path})`;
-						visivle_elem.classList.remove("hidden");
-					} else if (key == "title") {
-						var redraw_title = redraw_elem["title"];
-						if (redraw_title === "sample") {
-							redraw_title = "タイトルを入力してください"
-						}
-						title_elem = document.querySelector(".p-title");
-						title_elem.textContent = redraw_title;
-						title = redraw_title;
-					} else {
-						if (redraw_elem[key]["class"].indexOf("ft_content") >= 0) {
-							var elem_class = "ft_content";
-						} else if (redraw_elem[key]["class"].indexOf("sc_content") >= 0) {
-							var elem_class = "sc_content";
-						} else if (redraw_elem[key]["class"].indexOf("th_content") >= 0) {
-							var elem_class = "th_content";
-						}
-
-						const tempObjects = createTemplateObject(count);
-
-						// DOMのinsert
-						const insert = document.getElementById("data");
-						insert.insertAdjacentHTML('afterbegin', tempObjects[elem_class].dom);
-
-						// insertされたDOMにドラッグイベントを付加
-						addMouseEvent(elem_class);
-						add_style(redraw_elem[key]["content_txt"], redraw_elem[key]["css"], elem_class);
-						fitty('.fit', {
-							minSize: 12,
-							maxSize: 100,
-						});
-						//incrementCount
-						count++;
-					}
-
-				});
-			}
-			else {
-				console.log("no");
-			}
-		} else {
-			visivle_elem.classList.remove("hidden");
-			console.log("not save");
-		}
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-
 function add_style(content_txt, css, elem_class) {
 	$(`#${tempObjects[elem_class].textId}`).text(content_txt);
 	$(`#${tempObjects[elem_class].rotate.rotateContent}`).css("transform", css.transform);
@@ -597,7 +527,7 @@ const outputBtn = document.getElementById("outputBtn");
 const element = document.getElementById("data");
 const getImage = document.getElementById("getImage");
 
-// ユーティリティ関数を定義して、コードの重複を減らす
+
 function setWritingMode(elements, mode) {
 	elements.forEach((elem) => {
 		elem.css({
@@ -634,7 +564,6 @@ outputBtn.addEventListener('click', async function () {
 		let resetWriting = $(".text");
 		change_preview();
 
-		// 非同期処理を同期的に扱うために、Promise.allを使用
 		await Promise.all(resetWriting.map((_, elem) => {
 			elem = $(elem);
 			if (elem.css("writing-mode") === "vertical-rl") {
@@ -794,7 +723,6 @@ const themes = [
 
 const buttons = [];
 let pickr = null;
-
 for (const [theme, config] of themes) {
 	const button = document.createElement('button');
 	button.innerHTML = theme;
@@ -831,5 +759,72 @@ for (const [theme, config] of themes) {
 	});
 
 }
-
 buttons[0].click();
+
+window.onload = async function () {
+	try {
+		var visivle_elem = document.querySelector(".edit_area");
+		var query = location.search;
+		var value = query.split('=');
+		title = "タイトルを入力してください";
+		if (value[1]) {
+			var serch_id = decodeURIComponent(value[1]);
+			const params = { method: "POST", body: JSON.stringify({ "edit_id": serch_id }) };
+			const response = await fetch("./get_edit_data.php", params);
+			if (response.ok) {
+				var redraw_elem = await response.json();
+				Object.keys(redraw_elem).forEach((key) => {
+					if (key == "_image") {
+						// console.log(key);
+						// debugger;
+						var image_path = redraw_elem[key]["backgroud-image"];
+						const first_insert = document.getElementById("data");
+						first_insert.style.backgroundImage = `url(../data/img_data/${image_path})`;
+						visivle_elem.classList.remove("hidden");
+					} else if (key == "title") {
+						var redraw_title = redraw_elem["title"];
+						if (redraw_title === "sample") {
+							redraw_title = "タイトルを入力してください"
+						}
+						title_elem = document.querySelector(".p-title");
+						title_elem.textContent = redraw_title;
+						title = redraw_title;
+					} else {
+						if (redraw_elem[key]["class"].indexOf("ft_content") >= 0) {
+							var elem_class = "ft_content";
+						} else if (redraw_elem[key]["class"].indexOf("sc_content") >= 0) {
+							var elem_class = "sc_content";
+						} else if (redraw_elem[key]["class"].indexOf("th_content") >= 0) {
+							var elem_class = "th_content";
+						}
+
+						const tempObjects = createTemplateObject(count);
+
+						// DOMのinsert
+						const insert = document.getElementById("data");
+						insert.insertAdjacentHTML('afterbegin', tempObjects[elem_class].dom);
+
+						// insertされたDOMにドラッグイベントを付加
+						addMouseEvent(elem_class);
+						add_style(redraw_elem[key]["content_txt"], redraw_elem[key]["css"], elem_class);
+						fitty('.fit', {
+							minSize: 12,
+							maxSize: 100,
+						});
+						//incrementCount
+						count++;
+					}
+
+				});
+			}
+			else {
+				console.log("no");
+			}
+		} else {
+			visivle_elem.classList.remove("hidden");
+			console.log("not save");
+		}
+	} catch (error) {
+		console.log(error);
+	}
+}

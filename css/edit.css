@@ -239,21 +239,21 @@ main {
     background-size: 92%;
     background-position-x: 58%;
     background-position-y: 110%;
-    background-image: url(../img/save_icon.png);
+    background-image: url(../assets/img/save_icon.png);
 }
 .select_2{
     background-repeat: no-repeat;
     background-size: 92%;
     background-position-x: 58%;
     background-position-y: 110%;
-    background-image: url(../img/img_icon.png);
+    background-image: url(../assets/img/img_icon.png);
 }
 .select_3 {
     background-repeat: no-repeat;
     background-size: 92%;
     background-position-x: 58%;
     background-position-y: 110%;
-    background-image: url(../img/text.png);
+    background-image: url(../assets/img/text.png);
 }
 
 .select_off {
@@ -278,7 +278,7 @@ main {
 }
 
 .off_t {
-    opacity: 0;
+    opacity: 0 !important;
     display: none !important;
 }
 
@@ -325,7 +325,7 @@ main {
 
 .select-img-1 {
     margin-right: 10px;
-    background-image: url("../data/img_data/harinezumi.PNG");
+    background-image: url("../assets/img/template/harinezumi.PNG");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -333,7 +333,7 @@ main {
 
 .select-img-2 {
     margin-left: 10px;
-    background-image: url("../data/img_data/kingyo.PNG");
+    background-image: url("../assets/img/template/kingyo.PNG");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -341,7 +341,7 @@ main {
 
 .select-img-3 {
     margin-right: 10px;
-    background-image: url("../data/img_data/sc_mimai.PNG");
+    background-image: url("../assets/img/template/sc_mimai.PNG");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -349,7 +349,7 @@ main {
 
 .select-img-4 {
     margin-left: 10px;
-    background-image: url("../data/img_data/modan.png");
+    background-image: url("../assets/img/template/modan.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -357,7 +357,7 @@ main {
 
 .select-img-5 {
     margin-right: 10px;
-    background-image: url("../data/img_data/xmas.PNG");
+    background-image: url("../assets/img/template/xmas.PNG");
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
