@@ -4,7 +4,7 @@
 # サイトURL
 下記URLから閲覧できます。
 <br>
-[https://naruto1031.github.io/Letter_writing_site/edit.html](https://naruto1031.github.io/letter-writing-site/)
+[https://naruto1031.github.io/Letter_writing_site](https://naruto1031.github.io/letter-writing-site/)
 
 # サイトイメージ
 
