@@ -114,9 +114,9 @@
 	position: absolute;
 	width: 10px;
 	height: 10px;
-	/* border-radius: 5px; */
+	border-radius: 5px;
 	background-color: #fff;
-	border: solid 1px #000;
+	border: solid 0.5px #707070;
 	z-index: 2;
 }
 .resizer:hover,
@@ -182,6 +182,6 @@
 	display: block;
 }
 .on_h {
-    border: solid 1px #000;
+  border: dotted 1px #000;
 }
 
